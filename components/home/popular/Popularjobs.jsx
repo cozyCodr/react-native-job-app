@@ -11,18 +11,23 @@ import { useRouter } from "expo-router";
 import styles from "./popularjobs.style";
 import { COLORS, SIZES } from "../../../constants";
 import PopularJobCard from "../../common/cards/popular/PopularJobCard";
-import { isLoading } from "expo-font";
 import useFetch from "../../../hook/useFetch";
 
 const Popularjobs = () => {
+  const router = useRouter();
   const query = {
     query: "junior springboot",
     num_pages: "1",
     page: "1",
   };
   const endpoint = "search";
+  const [selectedJob, setSelectedJob] = useState({});
 
   const { data, isLoading, error } = useFetch({ endpoint, query });
+  const handleCardPress = (item) => {
+    router.push(`/job-details/${item.job_id}`);
+    setSelectedJob(item.job_id);
+  };
 
   return (
     <View style={styles.container}>
@@ -40,7 +45,13 @@ const Popularjobs = () => {
         ) : (
           <FlatList
             data={data}
-            renderItem={({ item }) => <PopularJobCard item={item} />}
+            renderItem={({ item }) => (
+              <PopularJobCard
+                item={item}
+                selectedJob={selectedJob}
+                handleCardPress={handleCardPress}
+              />
+            )}
             keyExtractor={(item) => item?.job_id}
             contentContainerStyle={{ columnGap: SIZES.medium }}
             horizontal
