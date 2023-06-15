@@ -24,7 +24,7 @@ const Home = () => {
         ),
         headerTitle:"",
       }} />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{
           flex: 1,
           padding: SIZES.medium
